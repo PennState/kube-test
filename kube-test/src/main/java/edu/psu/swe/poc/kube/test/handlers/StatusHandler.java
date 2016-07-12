@@ -41,8 +41,9 @@ public class StatusHandler extends AbstractHandler {
     for(Connector connector: server.getConnectors()) {
       for(EndPoint endPoint: connector.getConnectedEndPoints()) {
         InetSocketAddress ip = endPoint.getLocalAddress();
+        String ipAddress = ip.getAddress().toString().substring(1);
         writer.println("    {");
-        writer.println("      \"ipAddress\": \"" + ip.getAddress() + "\",");
+        writer.println("      \"ipAddress\": \"" + ipAddress + "\",");
         writer.println("      \"port\": \"" + ip.getPort() + "\"");
         writer.println("    },");
       }
