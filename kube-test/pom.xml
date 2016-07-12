@@ -1,0 +1,91 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>edu.psu.swe.poc.kube-test</groupId>
+    <artifactId>kube-test-parent</artifactId>
+    <version>0.1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>kube-test</artifactId>
+  <packaging>jar</packaging>
+  <name>Kube Test - Web</name>
+
+  <build>
+    <plugins>
+      <!-- <plugin> -->
+      <!-- <groupId>org.apache.maven.plugins</groupId> -->
+      <!-- <artifactId>maven-war-plugin</artifactId> -->
+      <!-- <version>2.6</version> -->
+      <!-- <configuration> -->
+      <!-- <archive> -->
+      <!-- <forced></forced> -->
+      <!-- <manifest> -->
+      <!-- <mainClass>edu/psu/swe/poc/kube/test/KubeTest</mainClass> -->
+      <!-- </manifest> -->
+      <!-- </archive> -->
+      <!-- </configuration> -->
+      <!-- </plugin> -->
+      <plugin>
+        <groupId>com.jolira</groupId>
+        <artifactId>onejar-maven-plugin</artifactId>
+        <version>1.4.4</version>
+        <executions>
+          <execution>
+            <configuration>
+              <onejarVersion>0.97</onejarVersion>
+              <attachToBuild>true</attachToBuild>
+              <classifier>onejar</classifier>
+              <mainClass>edu.psu.swe.poc.kube.test.KubeTest</mainClass>
+            </configuration>
+            <goals>
+              <goal>one-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>0.15.9</version>
+        <configuration>
+          <images>
+            <image>
+              <name>kube-test</name>
+              <build>
+                <from>java:8</from>
+                <tags>${project.version}</tags>
+                <assembly>
+                  <inline>
+                    <files>
+                      <file>
+                        <source>target/kube-test-0.1-SNAPSHOT.one-jar.jar</source>
+                      </file>
+                    </files>
+                  </inline>
+                </assembly>
+                <cmd>
+                  <shell>java -jar /maven/kube-test-0.1-SNAPSHOT.one-jar.jar</shell>
+                </cmd>
+              </build>
+              <run>
+                <ports>
+                  <port>jetty.port:8080</port>
+                </ports>
+              </run>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>
