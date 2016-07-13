@@ -57,7 +57,7 @@ or:
 mvn fabric8:start
 ```
 
-The image can be run via Kubernetes with as follows:
+The image can be run via Kubernetes as follows:
 
 ```
 kubectl run kube-test --image=kube-test:0.1-SNAPSHOT --replicas=5 --port=8080
@@ -68,3 +68,6 @@ The service can then be reached at the IP address listed by the following comman
 ```
 kubectl get svc kube-test
 ```
+## References
+
+-   [](
