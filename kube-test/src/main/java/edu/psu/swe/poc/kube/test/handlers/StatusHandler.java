@@ -35,9 +35,11 @@ public class StatusHandler extends AbstractHandler {
     PrintWriter writer = response.getWriter();
     
     writer.println("{");
+    writer.println("  \"path\": \"" + target + "\"");
+    writer.println("  \"httpStatusCode\": \"" + HttpServletResponse.SC_OK + "\"");
     writer.println("  \"contentType\": \"" + CONTENT_TYPE + "\",");
-    writer.println("  \"status\": " + STATUS + ",");
     writer.println("  \"ipAddresses\": [");
+    
     for(Connector connector: server.getConnectors()) {
       for(EndPoint endPoint: connector.getConnectedEndPoints()) {
         InetSocketAddress ip = endPoint.getLocalAddress();
@@ -48,6 +50,7 @@ public class StatusHandler extends AbstractHandler {
         writer.println("    },");
       }
     }
+    
     writer.println("  ]");
     writer.println("}");
     
